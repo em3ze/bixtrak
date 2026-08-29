@@ -9,9 +9,12 @@
   <body class="theme-dark">
     <div class="app-shell">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">Application</p>
-          <h1>BixTrak</h1>
+        <div class="brand-wrap" aria-label="BixTrak logo">
+          <div class="brand-mark">B</div>
+          <div class="brand-copy">
+            <p class="eyebrow">Application</p>
+            <h1>BixTrak</h1>
+          </div>
         </div>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Basculer le thème">
           <span class="theme-toggle-icon">☀️</span>
@@ -20,13 +23,18 @@
 
       <main class="content">
         <section class="selector-panel card">
-          <label for="station-search">Rechercher une station</label>
-          <input
-            id="station-search"
-            type="text"
-            placeholder="Tapez le nom d’une station..."
-            autocomplete="off"
-          />
+          <div class="search-wrap">
+            <label for="station-search">Rechercher une station</label>
+            <div class="search-input-shell">
+              <span class="search-icon">⌕</span>
+              <input
+                id="station-search"
+                type="text"
+                placeholder="Tapez le nom d’une station..."
+                autocomplete="off"
+              />
+            </div>
+          </div>
 
           <label for="station-select" class="select-label">Choisir une station</label>
           <select id="station-select">

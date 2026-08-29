@@ -70,6 +70,31 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
+  gap: 12px;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 100%);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #fff;
+  box-shadow: 0 12px 22px rgba(96, 165, 250, 0.32);
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
 }
 
 .eyebrow {
@@ -82,7 +107,7 @@ body {
 }
 
 h1 {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   font-size: clamp(2rem, 7vw, 2.5rem);
   letter-spacing: -0.06em;
 }
@@ -125,18 +150,39 @@ h1 {
   color: var(--text);
 }
 
-#station-search, .selector-panel select {
-  width: 100%;
-  padding: 13px 14px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: var(--panel-soft);
-  color: var(--text);
-  font-size: 1rem;
+.search-wrap {
+  margin-bottom: 16px;
 }
 
-#station-search {
-  margin-bottom: 16px;
+.search-input-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+#station-search, .selector-panel select {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel-soft) 0%, rgba(148, 163, 184, 0.04) 100%);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+#station-search:focus,
+.selector-panel select:focus {
+  outline: none;
+  border-color: rgba(96, 165, 250, 0.9);
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.12);
 }
 
 .select-label {
