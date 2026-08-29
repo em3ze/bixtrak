@@ -103,44 +103,45 @@ async function getStationsFromApi() {
         const stationInfo = stationInformationResponse.data?.data?.stations || [];
         const stationStatus = stationStatusResponse.data?.data?.stations || [];
 
-        const mergedStations = new Map();
-
+        const infoById = new Map();
         stationInfo.forEach((station) => {
-          const key = String(station.station_id);
-          mergedStations.set(key, {
-            ...normalizeStation({
-              ...station,
-              name: station.name || station.station_name,
-              latitude: station.lat ?? station.latitude,
-              longitude: station.lon ?? station.longitude
-            }),
-            id: key
-          });
+          infoById.set(String(station.station_id), station);
         });
 
+        const statusById = new Map();
         stationStatus.forEach((station) => {
-          const key = String(station.station_id);
-          const existingStation = mergedStations.get(key) || {
-            id: key,
-            name: `Station ${key}`,
-            latitude: null,
-            longitude: null
+          statusById.set(String(station.station_id), station);
+        });
+
+        const mergedStations = Array.from(new Set([
+          ...infoById.keys(),
+          ...statusById.keys()
+        ])).map((stationId) => {
+          const base = infoById.get(stationId) || {};
+          const status = statusById.get(stationId) || {};
+
+          const merged = {
+            ...base,
+            ...status,
+            station_id: stationId,
+            id: stationId,
+            name: base.name || status.name || `Station ${stationId}`,
+            latitude: base.lat ?? base.latitude ?? status.lat ?? status.latitude ?? null,
+            longitude: base.lon ?? base.longitude ?? status.lon ?? status.longitude ?? null,
+            bikes_available: Number(status.num_bikes_available ?? base.bikes_available ?? 0),
+            docks_available: Number(status.num_docks_available ?? base.docks_available ?? 0),
+            status:
+              status.is_installed === 0
+                ? 'closed'
+                : status.is_renting === 0
+                  ? 'out_of_service'
+                  : 'open'
           };
 
-          mergedStations.set(key, {
-            ...existingStation,
-            ...normalizeStation({
-              ...existingStation,
-              ...station,
-              name: existingStation.name,
-              latitude: existingStation.latitude,
-              longitude: existingStation.longitude
-            }),
-            id: key
-          });
+          return normalizeStation(merged);
         });
 
-        return Array.from(mergedStations.values());
+        return mergedStations;
       }
     }
 
