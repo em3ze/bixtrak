@@ -18,7 +18,15 @@ function applyTheme(theme) {
   document.body.classList.toggle('theme-light', !isDark);
   document.body.classList.toggle('theme-dark', isDark);
   if (themeToggle) {
-    themeToggle.innerHTML = isDark ? '<span class="theme-toggle-icon">☀️</span>' : '<span class="theme-toggle-icon">🌙</span>';
+    themeToggle.innerHTML = isDark
+      ? `
+        <svg class="theme-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 2.75a.8.8 0 0 1 .8.8V4.5a.8.8 0 0 1-1.6 0v-1a.8.8 0 0 1 .8-.75Zm0 16.5a.8.8 0 0 1 .8.8v1a.8.8 0 0 1-1.6 0v-1a.8.8 0 0 1 .8-.8Zm9.25-8.25a.8.8 0 0 1 0 1.6h-1a.8.8 0 0 1 0-1.6h1Zm-16.5 0a.8.8 0 0 1 0 1.6h-1a.8.8 0 0 1 0-1.6h1Zm13.27-4.52a.8.8 0 0 1 1.13 0l.7.7a.8.8 0 1 1-1.13 1.13l-.7-.7a.8.8 0 0 1 0-1.13Zm-10.04 10.04a.8.8 0 0 1 1.13 0l.7.7a.8.8 0 0 1-1.13 1.13l-.7-.7a.8.8 0 0 1 0-1.13Zm0-10.04a.8.8 0 0 1 0 1.13l-.7.7A.8.8 0 0 1 3.88 7.9l.7-.7a.8.8 0 0 1 1.13 0Zm10.04 10.04a.8.8 0 0 1 0 1.13l-.7.7a.8.8 0 0 1-1.13-1.13l.7-.7a.8.8 0 0 1 1.13 0ZM12 7.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Z" />
+        </svg>`
+      : `
+        <svg class="theme-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.2 14.55A7.5 7.5 0 0 1 9.45 3.8a.9.9 0 0 0-1.1-1.1A9.5 9.5 0 1 0 21.3 15.65a.9.9 0 0 0-1.1-1.1Z" />
+        </svg>`;
     themeToggle.setAttribute('aria-label', isDark ? 'Activer le mode jour' : 'Activer le mode sombre');
   }
 }

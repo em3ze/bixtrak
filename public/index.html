@@ -10,14 +10,18 @@
     <div class="app-shell">
       <header class="topbar">
         <div class="brand-wrap" aria-label="BixTrak logo">
-          <div class="brand-mark">B</div>
+          <div class="brand-mark" aria-hidden="true">
+            <span>B</span>
+          </div>
           <div class="brand-copy">
             <p class="eyebrow">Application</p>
             <h1>BixTrak</h1>
           </div>
         </div>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Basculer le thème">
-          <span class="theme-toggle-icon">☀️</span>
+          <svg class="theme-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 3.75v2.1m0 12.3v2.1m8.25-8.25h-2.1m-12.3 0h-2.1M16.7 7.3l-1.5-1.5m-8.4 8.4-1.5 1.5m0-8.4 1.5-1.5m8.4 8.4 1.5 1.5M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" />
+          </svg>
         </button>
       </header>
 
