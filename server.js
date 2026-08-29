@@ -38,16 +38,27 @@ const sampleStations = [
 
 function normalizeStation(rawStation) {
   const stationId = rawStation.station_id ?? rawStation.id ?? rawStation.stationId ?? rawStation.name;
+  const bikesAvailable = Number(
+    rawStation.bikes_available ??
+    rawStation.num_bikes_available ??
+    rawStation.available_bikes ??
+    rawStation.nb_bikes_available ??
+    0
+  );
+  const ebikesAvailable = Number(
+    rawStation.ebikes_available ??
+    rawStation.num_ebikes_available ??
+    rawStation.available_e_bikes ??
+    rawStation.nb_ebikes_available ??
+    0
+  );
 
   return {
     id: stationId,
     name: rawStation.name || rawStation.station_name || 'Station inconnue',
-    bikes_available:
-      rawStation.bikes_available ??
-      rawStation.num_bikes_available ??
-      rawStation.available_bikes ??
-      rawStation.nb_bikes_available ??
-      0,
+    bikes_available: bikesAvailable,
+    ebikes_available: ebikesAvailable,
+    regular_bikes_available: Math.max(0, bikesAvailable - ebikesAvailable),
     docks_available:
       rawStation.docks_available ??
       rawStation.num_docks_available ??
