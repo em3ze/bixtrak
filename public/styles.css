@@ -467,7 +467,27 @@ body.theme-light .favorite-item {
 
 @media (max-width: 767px) {
   .stats-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px;
+  }
+
+  .stat-card {
+    min-height: 118px;
+    padding: 12px 10px 14px;
+  }
+
+  .card-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+  }
+
+  .label {
+    font-size: 0.58rem;
+  }
+
+  .stat-card strong {
+    font-size: clamp(1.7rem, 7vw, 2.2rem);
   }
 
   .app-shell {
