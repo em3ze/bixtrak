@@ -1,6 +1,6 @@
 const stationSelect = document.getElementById('station-select');
 const stationSearch = document.getElementById('station-search');
-const bikeCount = document.getElementById('bike-count');
+const dockCount = document.getElementById('dock-count');
 const ebikeCount = document.getElementById('ebike-count');
 const regularBikeCount = document.getElementById('regular-bike-count');
 const stationStatus = document.getElementById('station-status');
@@ -164,16 +164,17 @@ async function loadStationDetails(stationId) {
     }
 
     const bikes = Number(station.bikes_available ?? 0);
+    const docks = Number(station.docks_available ?? 0);
     const ebikes = Number(station.ebikes_available ?? station.num_ebikes_available ?? 0);
     const regularBikes = Number(
       station.regular_bikes_available ?? Math.max(0, bikes - ebikes)
     );
     const status = station.status || 'open';
 
-    bikeCount.textContent = bikes;
+    dockCount.textContent = docks;
     ebikeCount.textContent = ebikes;
     regularBikeCount.textContent = regularBikes;
-    stationStatus.textContent = status;
+    stationStatus.textContent = `Statut : ${status === 'open' ? 'Ouvert' : status === 'closed' ? 'Fermé' : 'Indisponible'}`;
     stationName.textContent = station.name || 'Station';
     stationMeta.textContent = `ID: ${station.id} • ${bikes} vélos disponibles • ${ebikes} électriques • ${regularBikes} réguliers`;
     updateFavoriteButton(station.id);
