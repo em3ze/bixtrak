@@ -170,11 +170,13 @@ async function loadStationDetails(stationId) {
       station.regular_bikes_available ?? Math.max(0, bikes - ebikes)
     );
     const status = station.status || 'open';
+    const statusLabel = status === 'open' ? 'Ouvert' : status === 'closed' ? 'Fermé' : 'Indisponible';
 
     dockCount.textContent = docks;
     ebikeCount.textContent = ebikes;
     regularBikeCount.textContent = regularBikes;
-    stationStatus.textContent = `Statut : ${status === 'open' ? 'Ouvert' : status === 'closed' ? 'Fermé' : 'Indisponible'}`;
+    stationStatus.textContent = `Statut : ${statusLabel}`;
+    stationStatus.dataset.status = status === 'open' ? 'open' : status === 'closed' ? 'closed' : 'unknown';
     stationName.textContent = station.name || 'Station';
     stationMeta.textContent = `ID: ${station.id} • ${bikes} vélos disponibles • ${ebikes} électriques • ${regularBikes} réguliers`;
     updateFavoriteButton(station.id);
