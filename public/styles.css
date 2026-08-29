@@ -465,9 +465,9 @@ body.theme-light .favorite-item {
   padding: 6px 0;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 767px) {
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .app-shell {
