@@ -37,22 +37,30 @@ const sampleStations = [
 ];
 
 function normalizeStation(rawStation) {
+  const stationId = rawStation.station_id ?? rawStation.id ?? rawStation.stationId ?? rawStation.name;
+
   return {
-    id: rawStation.id || rawStation.station_id || rawStation.stationId || rawStation.name,
+    id: stationId,
     name: rawStation.name || rawStation.station_name || 'Station inconnue',
     bikes_available:
       rawStation.bikes_available ??
+      rawStation.num_bikes_available ??
       rawStation.available_bikes ??
       rawStation.nb_bikes_available ??
       0,
     docks_available:
       rawStation.docks_available ??
+      rawStation.num_docks_available ??
       rawStation.available_docks ??
       rawStation.nb_docks_available ??
       0,
-    status: rawStation.status || rawStation.state || 'open',
-    latitude: rawStation.latitude || rawStation.lat || null,
-    longitude: rawStation.longitude || rawStation.lon || rawStation.lng || null
+    status:
+      rawStation.status ||
+      (rawStation.is_installed === 0 ? 'closed' : rawStation.is_renting === 0 ? 'out_of_service' : 'open') ||
+      rawStation.state ||
+      'open',
+    latitude: rawStation.latitude ?? rawStation.lat ?? null,
+    longitude: rawStation.longitude ?? rawStation.lon ?? rawStation.lng ?? null
   };
 }
 
@@ -70,12 +78,73 @@ async function getStationsFromApi() {
       headers.Authorization = `Bearer ${process.env.BIXI_API_TOKEN}`;
     }
 
-    const response = await axios.get(apiUrl, {
+    const rootResponse = await axios.get(apiUrl, {
       headers,
       timeout: 10000
     });
 
-    const payload = response.data;
+    const rootData = rootResponse.data || {};
+    const feedList =
+      rootData?.data?.en?.feeds ||
+      rootData?.data?.fr?.feeds ||
+      rootData?.feeds ||
+      [];
+
+    if (Array.isArray(feedList) && feedList.length > 0) {
+      const stationInformationFeed = feedList.find((feed) => feed.name === 'station_information');
+      const stationStatusFeed = feedList.find((feed) => feed.name === 'station_status');
+
+      if (stationInformationFeed && stationStatusFeed) {
+        const [stationInformationResponse, stationStatusResponse] = await Promise.all([
+          axios.get(stationInformationFeed.url, { headers, timeout: 10000 }),
+          axios.get(stationStatusFeed.url, { headers, timeout: 10000 })
+        ]);
+
+        const stationInfo = stationInformationResponse.data?.data?.stations || [];
+        const stationStatus = stationStatusResponse.data?.data?.stations || [];
+
+        const mergedStations = new Map();
+
+        stationInfo.forEach((station) => {
+          const key = String(station.station_id);
+          mergedStations.set(key, {
+            ...normalizeStation({
+              ...station,
+              name: station.name || station.station_name,
+              latitude: station.lat ?? station.latitude,
+              longitude: station.lon ?? station.longitude
+            }),
+            id: key
+          });
+        });
+
+        stationStatus.forEach((station) => {
+          const key = String(station.station_id);
+          const existingStation = mergedStations.get(key) || {
+            id: key,
+            name: `Station ${key}`,
+            latitude: null,
+            longitude: null
+          };
+
+          mergedStations.set(key, {
+            ...existingStation,
+            ...normalizeStation({
+              ...existingStation,
+              ...station,
+              name: existingStation.name,
+              latitude: existingStation.latitude,
+              longitude: existingStation.longitude
+            }),
+            id: key
+          });
+        });
+
+        return Array.from(mergedStations.values());
+      }
+    }
+
+    const payload = rootData;
     const stations = Array.isArray(payload)
       ? payload
       : payload.stations || payload.data || [];
