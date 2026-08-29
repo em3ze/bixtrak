@@ -1,0 +1,13 @@
+services:
+  bixtrak:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bixtrak
+    restart: unless-stopped
+    ports:
+      - "4236:4236"
+    environment:
+      PORT: 4236
+      BIXI_API_URL: ${BIXI_API_URL:-}
+      BIXI_API_TOKEN: ${BIXI_API_TOKEN:-}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BixTrak</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Application</p>
+          <h1>BixTrak</h1>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="selector-panel card">
+          <label for="station-select">Choisir une station</label>
+          <select id="station-select">
+            <option value="">Chargement…</option>
+          </select>
+        </section>
+
+        <section class="stats-grid">
+          <article class="card stat-card accent-blue">
+            <span class="label">Vélos disponibles</span>
+            <strong id="bike-count">0</strong>
+          </article>
+
+          <article class="card stat-card accent-green">
+            <span class="label">Places libres</span>
+            <strong id="dock-count">0</strong>
+          </article>
+
+          <article class="card stat-card accent-orange">
+            <span class="label">Statut</span>
+            <strong id="station-status">--</strong>
+          </article>
+        </section>
+
+        <section class="details card">
+          <h2 id="station-name">Station</h2>
+          <p id="station-meta">Sélectionnez une station pour voir les détails.</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
