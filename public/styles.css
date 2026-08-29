@@ -465,7 +465,7 @@ body.theme-light .favorite-item {
   padding: 6px 0;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 520px) {
   .stats-grid {
     grid-template-columns: 1fr;
   }
