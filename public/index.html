@@ -6,13 +6,16 @@
     <title>BixTrak</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
+  <body class="theme-dark">
     <div class="app-shell">
       <header class="topbar">
         <div>
           <p class="eyebrow">Application</p>
           <h1>BixTrak</h1>
         </div>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Basculer le thème">
+          <span class="theme-toggle-icon">☀️</span>
+        </button>
       </header>
 
       <main class="content">
@@ -37,25 +40,37 @@
 
         <section class="stats-grid">
           <article class="card stat-card accent-blue">
-            <span class="label">Vélo régulier</span>
+            <div class="card-header">
+              <span class="card-icon">🚲</span>
+              <span class="label">Vélo régulier</span>
+            </div>
             <strong id="regular-bike-count">0</strong>
           </article>
 
           <article class="card stat-card accent-green">
-            <span class="label">Vélo électrique</span>
+            <div class="card-header">
+              <span class="card-icon">⚡</span>
+              <span class="label">Vélo électrique</span>
+            </div>
             <strong id="ebike-count">0</strong>
           </article>
 
           <article class="card stat-card accent-orange">
-            <span class="label">Dock libre</span>
+            <div class="card-header">
+              <span class="card-icon">🅿️</span>
+              <span class="label">Dock libre</span>
+            </div>
             <strong id="dock-count">0</strong>
           </article>
         </section>
 
         <section class="details card">
-          <h2 id="station-name">Station</h2>
+          <div class="details-topline">
+            <span class="details-icon">📍</span>
+            <h2 id="station-name">Station</h2>
+          </div>
           <p id="station-meta">Sélectionnez une station pour voir les détails.</p>
-          <p id="station-status" class="status-line">Statut : --</p>
+          <p id="station-status" class="status-line" data-status="unknown">Statut : --</p>
         </section>
 
         <section class="favorites card">

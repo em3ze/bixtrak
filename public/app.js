@@ -8,9 +8,31 @@ const stationName = document.getElementById('station-name');
 const stationMeta = document.getElementById('station-meta');
 const favoriteToggle = document.getElementById('favorite-toggle');
 const favoriteList = document.getElementById('favorite-list');
+const themeToggle = document.getElementById('theme-toggle');
 
 let allStations = [];
 let favorites = JSON.parse(localStorage.getItem('bixtrak-favorites') || '[]');
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('theme-light', !isDark);
+  document.body.classList.toggle('theme-dark', isDark);
+  if (themeToggle) {
+    themeToggle.innerHTML = isDark ? '<span class="theme-toggle-icon">☀️</span>' : '<span class="theme-toggle-icon">🌙</span>';
+    themeToggle.setAttribute('aria-label', isDark ? 'Activer le mode jour' : 'Activer le mode sombre');
+  }
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('bixtrak-theme') || 'dark';
+  applyTheme(savedTheme);
+}
+
+function toggleTheme() {
+  const nextTheme = document.body.classList.contains('theme-light') ? 'dark' : 'light';
+  localStorage.setItem('bixtrak-theme', nextTheme);
+  applyTheme(nextTheme);
+}
 
 function normalizeFavorites() {
   favorites = Array.from(new Set(favorites.map(String)));
@@ -213,5 +235,8 @@ favoriteToggle.addEventListener('click', () => {
   }
 });
 
+themeToggle.addEventListener('click', toggleTheme);
+
+initTheme();
 renderFavorites();
 loadStations();
