@@ -17,10 +17,22 @@
 
       <main class="content">
         <section class="selector-panel card">
-          <label for="station-select">Choisir une station</label>
+          <label for="station-search">Rechercher une station</label>
+          <input
+            id="station-search"
+            type="text"
+            placeholder="Tapez le nom d’une station..."
+            autocomplete="off"
+          />
+
+          <label for="station-select" class="select-label">Choisir une station</label>
           <select id="station-select">
             <option value="">Chargement…</option>
           </select>
+
+          <div class="action-row">
+            <button id="favorite-toggle" type="button">Ajouter aux favoris</button>
+          </div>
         </section>
 
         <section class="stats-grid">
@@ -43,6 +55,13 @@
         <section class="details card">
           <h2 id="station-name">Station</h2>
           <p id="station-meta">Sélectionnez une station pour voir les détails.</p>
+        </section>
+
+        <section class="favorites card">
+          <h3>Favoris</h3>
+          <ul id="favorite-list" class="favorite-list">
+            <li class="empty-state">Aucun favori pour le moment.</li>
+          </ul>
         </section>
       </main>
     </div>

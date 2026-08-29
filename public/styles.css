@@ -68,6 +68,20 @@ h1 {
   margin-bottom: 12px;
 }
 
+#station-search {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f8fbff;
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+
+.select-label {
+  margin-top: 8px;
+}
+
 .selector-panel select {
   width: 100%;
   padding: 14px 16px;
@@ -75,6 +89,24 @@ h1 {
   border: 1px solid var(--border);
   background: #f8fbff;
   font-size: 1rem;
+}
+
+.action-row {
+  margin-top: 16px;
+}
+
+#favorite-toggle {
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#favorite-toggle:hover {
+  background: var(--primary-dark);
 }
 
 .stats-grid {
@@ -126,6 +158,57 @@ h1 {
   margin: 0;
   color: var(--muted);
   line-height: 1.6;
+}
+
+.favorites {
+  padding: 24px;
+}
+
+.favorites h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.favorite-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.favorite-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+.favorite-name {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  flex: 1;
+}
+
+.favorite-remove {
+  border: none;
+  background: transparent;
+  color: var(--primary-dark);
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.empty-state {
+  color: var(--muted);
+  padding: 10px 0;
 }
 
 @media (max-width: 640px) {
