@@ -170,6 +170,12 @@ h1 {
 
 .selector-panel {
   padding: 18px 18px 20px;
+  background: linear-gradient(180deg, rgba(18, 28, 40, 0.9) 0%, rgba(12, 19, 28, 0.78) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+body.theme-light .selector-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(248, 251, 255, 0.98) 100%);
 }
 
 .selector-panel label {
@@ -192,21 +198,27 @@ h1 {
 .search-icon {
   position: absolute;
   left: 14px;
-  font-size: 1.2rem;
-  opacity: 0.7;
+  font-size: 1.18rem;
+  opacity: 0.75;
+  color: var(--muted);
 }
 
 #station-search, .selector-panel select {
   width: 100%;
-  padding: 13px 14px 13px 42px;
+  padding: 14px 16px 14px 42px;
   border-radius: 16px;
   border: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--panel-soft) 0%, rgba(148, 163, 184, 0.04) 100%);
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.88) 0%, rgba(15, 23, 42, 0.72) 100%);
   color: var(--text);
   font-size: 1rem;
   appearance: none;
   -webkit-appearance: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+body.theme-light #station-search,
+body.theme-light .selector-panel select {
+  background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(240, 246, 255, 0.96) 100%);
 }
 
 #station-search:focus,
@@ -214,6 +226,11 @@ h1 {
   outline: none;
   border-color: rgba(96, 165, 250, 0.9);
   box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.12);
+  transform: translateY(-1px);
+}
+
+#station-search::placeholder {
+  color: var(--muted);
 }
 
 #station-search option,
@@ -240,6 +257,13 @@ h1 {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(96, 165, 250, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+#favorite-toggle:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 14px 28px rgba(96, 165, 250, 0.32);
 }
 
 .stats-grid {
@@ -255,6 +279,14 @@ h1 {
   flex-direction: column;
   justify-content: space-between;
   gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(15, 23, 42, 0.18);
 }
 
 .card-header {
@@ -271,6 +303,7 @@ h1 {
   place-items: center;
   background: rgba(255, 255, 255, 0.1);
   font-size: 1rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
 .label {
@@ -289,21 +322,26 @@ h1 {
 
 .accent-blue {
   border-top: 5px solid var(--primary);
-  background: linear-gradient(180deg, rgba(96, 165, 250, 0.08) 0%, rgba(15, 23, 42, 0.08) 100%);
+  background: linear-gradient(180deg, rgba(96, 165, 250, 0.12) 0%, rgba(15, 23, 42, 0.08) 100%);
 }
 
 .accent-green {
   border-top: 5px solid var(--success);
-  background: linear-gradient(180deg, rgba(52, 211, 153, 0.08) 0%, rgba(15, 23, 42, 0.08) 100%);
+  background: linear-gradient(180deg, rgba(52, 211, 153, 0.12) 0%, rgba(15, 23, 42, 0.08) 100%);
 }
 
 .accent-orange {
   border-top: 5px solid var(--warning);
-  background: linear-gradient(180deg, rgba(251, 191, 36, 0.08) 0%, rgba(15, 23, 42, 0.08) 100%);
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.12) 0%, rgba(15, 23, 42, 0.08) 100%);
 }
 
 .details {
   padding: 18px 18px 20px;
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.92) 0%, rgba(15, 23, 42, 0.8) 100%);
+}
+
+body.theme-light .details {
+  background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(245, 249, 255, 0.96) 100%);
 }
 
 .details-topline {
@@ -391,7 +429,17 @@ body.theme-dark .status-line[data-status="closed"] {
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: var(--panel-soft);
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.82) 0%, rgba(15, 23, 42, 0.72) 100%);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+body.theme-light .favorite-item {
+  background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(244, 248, 255, 0.98) 100%);
+}
+
+.favorite-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(96, 165, 250, 0.35);
 }
 
 .favorite-name {
