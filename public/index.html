@@ -26,7 +26,7 @@
       </header>
 
       <main class="content">
-        <section class="selector-panel card">
+        <section id="home-section" class="selector-panel card">
           <div class="search-wrap">
             <label for="station-search">Rechercher une station</label>
             <div class="search-input-shell">
@@ -50,7 +50,7 @@
           </div>
         </section>
 
-        <section class="stats-grid">
+        <section id="stations-section" class="stats-grid">
           <article class="card stat-card accent-blue">
             <div class="card-header">
               <span class="card-icon">🚲</span>
@@ -85,13 +85,44 @@
           <p id="station-status" class="status-line" data-status="unknown">Statut : --</p>
         </section>
 
-        <section class="favorites card">
+        <section id="favorites-section" class="favorites card">
           <h3>Favoris</h3>
           <ul id="favorite-list" class="favorite-list">
             <li class="empty-state">Aucun favori pour le moment.</li>
           </ul>
         </section>
       </main>
+
+      <nav class="bottom-nav" aria-label="Navigation principale">
+        <div class="bottom-nav-pill">
+          <button class="nav-item is-active" type="button" data-target="home-section" aria-label="Accueil">
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="m3.5 10.8 8.5-7 8.5 7v8.1a1.6 1.6 0 0 1-1.6 1.6H5.1a1.6 1.6 0 0 1-1.6-1.6v-8.1Z" />
+              <path d="M9.2 20.5v-6h5.6v6" />
+            </svg>
+            <span>Accueil</span>
+          </button>
+          <button class="nav-item" type="button" data-target="stations-section" aria-label="Stations">
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M5 19.5V6.2A1.7 1.7 0 0 1 6.7 4.5h10.6A1.7 1.7 0 0 1 19 6.2v13.3" />
+              <path d="M8 8h8M8 12h8M8 16h4" />
+            </svg>
+            <span>Stations</span>
+          </button>
+          <button class="nav-item" type="button" data-target="favorites-section" aria-label="Favoris">
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M20.4 8.8c0 5.1-8.4 10.4-8.4 10.4S3.6 13.9 3.6 8.8A4.3 4.3 0 0 1 12 6.9a4.3 4.3 0 0 1 8.4 1.9Z" />
+            </svg>
+            <span>Favoris</span>
+          </button>
+        </div>
+        <button id="nav-search" class="nav-search" type="button" aria-label="Rechercher une station">
+          <svg class="nav-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="10.8" cy="10.8" r="6.3" />
+            <path d="m16 16 4.7 4.7" />
+          </svg>
+        </button>
+      </nav>
     </div>
 
     <script src="/app.js"></script>

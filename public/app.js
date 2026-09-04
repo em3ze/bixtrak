@@ -9,6 +9,8 @@ const stationMeta = document.getElementById('station-meta');
 const favoriteToggle = document.getElementById('favorite-toggle');
 const favoriteList = document.getElementById('favorite-list');
 const themeToggle = document.getElementById('theme-toggle');
+const navSearch = document.getElementById('nav-search');
+const navItems = document.querySelectorAll('.nav-item');
 
 let allStations = [];
 let favorites = JSON.parse(localStorage.getItem('bixtrak-favorites') || '[]');
@@ -244,6 +246,24 @@ favoriteToggle.addEventListener('click', () => {
 });
 
 themeToggle.addEventListener('click', toggleTheme);
+
+navItems.forEach((navItem) => {
+  navItem.addEventListener('click', () => {
+    const target = document.getElementById(navItem.dataset.target);
+    if (!target) {
+      return;
+    }
+
+    navItems.forEach((item) => item.classList.remove('is-active'));
+    navItem.classList.add('is-active');
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+navSearch.addEventListener('click', () => {
+  document.getElementById('home-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  window.setTimeout(() => stationSearch.focus(), 350);
+});
 
 initTheme();
 renderFavorites();
