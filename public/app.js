@@ -82,6 +82,10 @@ function updateFavoriteButton(stationId) {
 }
 
 function renderFavorites() {
+  if (!favoriteList) {
+    return;
+  }
+
   favoriteList.innerHTML = '';
 
   if (!favorites.length) {
@@ -127,6 +131,10 @@ function setActiveNav(targetId) {
 }
 
 function closeStationsSheet() {
+  if (!stationsSheet || !sheetBackdrop) {
+    return;
+  }
+
   stationsSheet.classList.remove('is-open');
   stationsSheet.setAttribute('aria-hidden', 'true');
   sheetBackdrop.hidden = true;
@@ -134,6 +142,10 @@ function closeStationsSheet() {
 }
 
 function openStationsSheet() {
+  if (!stationsSheet || !sheetBackdrop) {
+    return;
+  }
+
   stationsSheet.classList.add('is-open');
   stationsSheet.setAttribute('aria-hidden', 'false');
   sheetBackdrop.hidden = false;
@@ -142,6 +154,10 @@ function openStationsSheet() {
 }
 
 function renderStationList(filteredStations = allStations) {
+  if (!stationList) {
+    return;
+  }
+
   stationList.innerHTML = '';
 
   if (!Array.isArray(filteredStations) || filteredStations.length === 0) {
@@ -322,7 +338,9 @@ favoriteToggle.addEventListener('click', () => {
   }
 });
 
-themeToggle.addEventListener('click', toggleTheme);
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+}
 
 navItems.forEach((navItem) => {
   navItem.addEventListener('click', () => {
@@ -340,13 +358,20 @@ navItems.forEach((navItem) => {
   });
 });
 
-navSearch.addEventListener('click', () => {
-  setActiveNav('stations-section');
-  openStationsSheet();
-});
+if (navSearch) {
+  navSearch.addEventListener('click', () => {
+    setActiveNav('stations-section');
+    openStationsSheet();
+  });
+}
 
-closeStations.addEventListener('click', closeStationsSheet);
-sheetBackdrop.addEventListener('click', closeStationsSheet);
+if (closeStations) {
+  closeStations.addEventListener('click', closeStationsSheet);
+}
+
+if (sheetBackdrop) {
+  sheetBackdrop.addEventListener('click', closeStationsSheet);
+}
 
 initTheme();
 renderFavorites();
