@@ -132,6 +132,15 @@ function renderFavorites() {
 
 function setActiveNav(targetId) {
   navItems.forEach((item) => item.classList.toggle('is-active', item.dataset.target === targetId));
+
+  const favoritesSection = document.getElementById('favorites-section');
+  const homeSection = document.getElementById('home-section');
+  if (favoritesSection) {
+    favoritesSection.classList.toggle('is-visible', targetId === 'favorites-section');
+  }
+  if (homeSection) {
+    homeSection.classList.toggle('is-hidden', targetId === 'favorites-section');
+  }
 }
 
 function closeStationsSheet() {

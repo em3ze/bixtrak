@@ -429,7 +429,16 @@ body.theme-dark .status-line[data-status="closed"] {
 }
 
 .favorites {
+  display: none;
   padding: 18px;
+}
+
+.favorites.is-visible {
+  display: block;
+}
+
+.home-view.is-hidden {
+  display: none;
 }
 
 .favorites h3 {
