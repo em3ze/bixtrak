@@ -744,14 +744,26 @@ body.sheet-open {
   color: rgba(237, 245, 255, 0.62);
   cursor: pointer;
   font: inherit;
+  appearance: none;
+  -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
   outline: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-.nav-item:focus-visible,
-.nav-search:focus-visible {
+.nav-item:focus,
+.nav-search:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-item:focus-visible,
+  .nav-search:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 3px;
+  }
 }
 
 .nav-item {

@@ -406,12 +406,14 @@ navItems.forEach((navItem) => {
     if (navItem.dataset.target === 'stations-section') {
       setActiveNav('stations-section');
       openStationsSheet();
+      navItem.blur();
       return;
     }
 
     if (target) {
       setActiveNav(navItem.dataset.target);
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      navItem.blur();
     }
   });
 });
@@ -420,6 +422,7 @@ if (navSearch) {
   navSearch.addEventListener('click', () => {
     setActiveNav('stations-section');
     openStationsSheet(true);
+    navSearch.blur();
   });
 }
 
