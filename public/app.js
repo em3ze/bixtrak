@@ -17,7 +17,14 @@ const sheetBackdrop = document.getElementById('sheet-backdrop');
 const closeStations = document.getElementById('close-stations');
 
 let allStations = [];
-let favorites = JSON.parse(localStorage.getItem('bixtrak-favorites') || '[]');
+let favorites = [];
+
+try {
+  const storedFavorites = JSON.parse(localStorage.getItem('bixtrak-favorites') || '[]');
+  favorites = Array.isArray(storedFavorites) ? storedFavorites : [];
+} catch (error) {
+  localStorage.removeItem('bixtrak-favorites');
+}
 
 function applyTheme(theme) {
   const isDark = theme === 'dark';
@@ -218,6 +225,7 @@ function renderStationOptions(filteredStations = allStations) {
   }
 
   updateFavoriteButton(stationSelect.value);
+  renderStationList(filteredStations);
 }
 
 async function loadStations() {
