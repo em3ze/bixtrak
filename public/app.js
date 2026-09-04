@@ -15,8 +15,13 @@ const navItems = document.querySelectorAll('.nav-item');
 const stationsSheet = document.getElementById('stations-sheet');
 const sheetBackdrop = document.getElementById('sheet-backdrop');
 const closeStations = document.getElementById('close-stations');
+const stationsSection = document.getElementById('stations-section');
+const stationMap = document.getElementById('station-map');
+const mapEmpty = document.getElementById('map-empty');
+const availabilityHistory = document.getElementById('availability-history');
 
 let allStations = [];
+let activeStation = null;
 let favorites = [];
 
 try {
@@ -62,6 +67,74 @@ function normalizeFavorites() {
 
 function isFavorite(stationId) {
   return favorites.includes(String(stationId));
+}
+
+function getHistory(stationId) {
+  try {
+    const history = JSON.parse(localStorage.getItem(`bixtrak-history-${stationId}`) || '[]');
+    return Array.isArray(history) ? history : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveHistory(station) {
+  const history = getHistory(station.id);
+  const snapshot = {
+    time: new Date().toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }),
+    bikes: Number(station.bikes_available ?? 0),
+    ebikes: Number(station.ebikes_available ?? 0),
+    docks: Number(station.docks_available ?? 0)
+  };
+  const lastSnapshot = history[history.length - 1];
+  if (!lastSnapshot || lastSnapshot.bikes !== snapshot.bikes || lastSnapshot.ebikes !== snapshot.ebikes || lastSnapshot.docks !== snapshot.docks) {
+    history.push(snapshot);
+    localStorage.setItem(`bixtrak-history-${station.id}`, JSON.stringify(history.slice(-12)));
+  }
+  renderHistory(station.id);
+}
+
+function renderHistory(stationId) {
+  if (!availabilityHistory) {
+    return;
+  }
+  const history = getHistory(stationId);
+  availabilityHistory.innerHTML = '';
+  if (!history.length) {
+    availabilityHistory.innerHTML = '<p class="empty-state">Les observations apparaîtront ici.</p>';
+    return;
+  }
+  history.slice().reverse().forEach((snapshot) => {
+    const row = document.createElement('div');
+    row.className = 'history-row';
+    row.innerHTML = `<time>${snapshot.time}</time><span class="history-value history-blue">${snapshot.bikes} vélos</span><span class="history-value history-green">${snapshot.ebikes} électriques</span><span class="history-value history-orange">${snapshot.docks} docks</span>`;
+    availabilityHistory.appendChild(row);
+  });
+}
+
+function updateStationMap(station) {
+  if (!stationMap || !mapEmpty) {
+    return;
+  }
+  const latitude = Number(station.latitude);
+  const longitude = Number(station.longitude);
+  const hasCoordinates = Number.isFinite(latitude) && Number.isFinite(longitude);
+  stationMap.hidden = !hasCoordinates;
+  mapEmpty.hidden = hasCoordinates;
+  if (hasCoordinates) {
+    const bounds = `${longitude - 0.006},${latitude - 0.004},${longitude + 0.006},${latitude + 0.004}`;
+    stationMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bounds}&layer=mapnik&marker=${latitude},${longitude}`;
+  }
+}
+
+function selectNextFavorite() {
+  if (!activeStation || favorites.length < 2) {
+    return;
+  }
+  const currentIndex = favorites.indexOf(String(activeStation.id));
+  const nextFavoriteId = favorites[(currentIndex + 1) % favorites.length];
+  stationSelect.value = nextFavoriteId;
+  loadStationDetails(nextFavoriteId);
 }
 
 function saveFavorites() {
@@ -340,6 +413,8 @@ async function loadStationDetails(stationId) {
       return;
     }
 
+    activeStation = station;
+
     const bikes = Number(station.bikes_available ?? 0);
     const docks = Number(station.docks_available ?? 0);
     const ebikes = Number(station.ebikes_available ?? station.num_ebikes_available ?? 0);
@@ -357,9 +432,15 @@ async function loadStationDetails(stationId) {
     stationName.textContent = station.name || 'Station';
     stationMeta.textContent = `ID: ${station.id} • ${bikes} vélos disponibles • ${ebikes} électriques • ${regularBikes} réguliers`;
     updateFavoriteButton(station.id);
+    updateStationMap(station);
+    saveHistory(station);
   } catch (error) {
     console.error('Unable to load station details:', error);
   }
+}
+
+if (stationsSection) {
+  stationsSection.addEventListener('click', selectNextFavorite);
 }
 
 if (stationSearch) {
@@ -439,3 +520,9 @@ initTheme();
 renderFavorites();
 renderStationList();
 loadStations();
+
+window.setInterval(() => {
+  if (activeStation) {
+    loadStationDetails(activeStation.id);
+  }
+}, 300000);

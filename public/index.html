@@ -61,6 +61,33 @@
             <strong id="dock-count">0</strong>
           </article>
           </section>
+
+          <section class="location-card card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Emplacement</p>
+                <h3>La station sur la carte</h3>
+              </div>
+              <span class="section-heading-icon">⌖</span>
+            </div>
+            <div class="map-frame">
+              <iframe id="station-map" title="Emplacement de la station" loading="lazy"></iframe>
+              <p id="map-empty" class="map-empty">Les coordonnées de la station ne sont pas disponibles.</p>
+            </div>
+          </section>
+
+          <section class="history-card card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Suivi local</p>
+                <h3>Historique des disponibilités</h3>
+              </div>
+              <span class="section-heading-icon">↗</span>
+            </div>
+            <div id="availability-history" class="availability-history">
+              <p class="empty-state">Les observations apparaîtront ici.</p>
+            </div>
+          </section>
         </section>
 
         <section id="favorites-section" class="favorites card">
