@@ -398,6 +398,15 @@ body.theme-light .accent-orange {
   transform-style: preserve-3d;
   perspective: 900px;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.details:focus,
+.details:active {
+  outline: none;
+  box-shadow: var(--shadow);
 }
 
 .details.is-flipping {
