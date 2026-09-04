@@ -1,5 +1,6 @@
 const stationSelect = document.getElementById('station-select');
 const stationSearch = document.getElementById('station-search');
+const stationList = document.getElementById('station-list');
 const dockCount = document.getElementById('dock-count');
 const ebikeCount = document.getElementById('ebike-count');
 const regularBikeCount = document.getElementById('regular-bike-count');
@@ -11,6 +12,9 @@ const favoriteList = document.getElementById('favorite-list');
 const themeToggle = document.getElementById('theme-toggle');
 const navSearch = document.getElementById('nav-search');
 const navItems = document.querySelectorAll('.nav-item');
+const stationsSheet = document.getElementById('stations-sheet');
+const sheetBackdrop = document.getElementById('sheet-backdrop');
+const closeStations = document.getElementById('close-stations');
 
 let allStations = [];
 let favorites = JSON.parse(localStorage.getItem('bixtrak-favorites') || '[]');
@@ -95,6 +99,7 @@ function renderFavorites() {
     stationButton.addEventListener('click', () => {
       stationSelect.value = String(favoriteId);
       loadStationDetails(String(favoriteId));
+      setActiveNav('home-section');
     });
 
     const removeButton = document.createElement('button');
@@ -107,6 +112,68 @@ function renderFavorites() {
     item.appendChild(stationButton);
     item.appendChild(removeButton);
     favoriteList.appendChild(item);
+  });
+}
+
+function setActiveNav(targetId) {
+  navItems.forEach((item) => item.classList.toggle('is-active', item.dataset.target === targetId));
+}
+
+function closeStationsSheet() {
+  stationsSheet.classList.remove('is-open');
+  stationsSheet.setAttribute('aria-hidden', 'true');
+  sheetBackdrop.hidden = true;
+  document.body.classList.remove('sheet-open');
+}
+
+function openStationsSheet() {
+  stationsSheet.classList.add('is-open');
+  stationsSheet.setAttribute('aria-hidden', 'false');
+  sheetBackdrop.hidden = false;
+  document.body.classList.add('sheet-open');
+  window.setTimeout(() => stationSearch.focus(), 250);
+}
+
+function renderStationList(filteredStations = allStations) {
+  stationList.innerHTML = '';
+
+  if (!Array.isArray(filteredStations) || filteredStations.length === 0) {
+    const emptyItem = document.createElement('li');
+    emptyItem.className = 'empty-state';
+    emptyItem.textContent = 'Aucune station trouvée.';
+    stationList.appendChild(emptyItem);
+    return;
+  }
+
+  filteredStations.forEach((station) => {
+    const item = document.createElement('li');
+    item.className = 'station-list-item';
+    item.classList.toggle('is-selected', String(station.id) === String(stationSelect.value));
+
+    const stationButton = document.createElement('button');
+    stationButton.type = 'button';
+    stationButton.className = 'station-select-button';
+    stationButton.innerHTML = `<strong>${station.name}</strong><span>ID ${station.id}</span>`;
+    stationButton.addEventListener('click', () => {
+      stationSelect.value = String(station.id);
+      loadStationDetails(String(station.id));
+      closeStationsSheet();
+      setActiveNav('home-section');
+      renderStationList(filteredStations);
+    });
+
+    const favoriteButton = document.createElement('button');
+    favoriteButton.type = 'button';
+    favoriteButton.className = `station-favorite-button${isFavorite(station.id) ? ' is-favorite' : ''}`;
+    favoriteButton.textContent = isFavorite(station.id) ? '★' : '☆';
+    favoriteButton.setAttribute('aria-label', isFavorite(station.id)
+      ? `Retirer ${station.name} des favoris`
+      : `Ajouter ${station.name} aux favoris`);
+    favoriteButton.addEventListener('click', () => toggleFavorite(String(station.id)));
+
+    item.appendChild(stationButton);
+    item.appendChild(favoriteButton);
+    stationList.appendChild(item);
   });
 }
 
@@ -126,6 +193,7 @@ function toggleFavorite(stationId) {
   saveFavorites();
   renderFavorites();
   updateFavoriteButton(stationSelect.value);
+  renderStationList();
 }
 
 function renderStationOptions(filteredStations = allStations) {
@@ -134,6 +202,7 @@ function renderStationOptions(filteredStations = allStations) {
   if (!Array.isArray(filteredStations) || filteredStations.length === 0) {
     stationSelect.innerHTML = '<option value="">Aucune station trouvée</option>';
     updateFavoriteButton('');
+    renderStationList(filteredStations);
     return;
   }
 
@@ -250,21 +319,28 @@ themeToggle.addEventListener('click', toggleTheme);
 navItems.forEach((navItem) => {
   navItem.addEventListener('click', () => {
     const target = document.getElementById(navItem.dataset.target);
-    if (!target) {
+    if (navItem.dataset.target === 'stations-section') {
+      setActiveNav('stations-section');
+      openStationsSheet();
       return;
     }
 
-    navItems.forEach((item) => item.classList.remove('is-active'));
-    navItem.classList.add('is-active');
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (target) {
+      setActiveNav(navItem.dataset.target);
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 });
 
 navSearch.addEventListener('click', () => {
-  document.getElementById('home-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  window.setTimeout(() => stationSearch.focus(), 350);
+  setActiveNav('stations-section');
+  openStationsSheet();
 });
+
+closeStations.addEventListener('click', closeStationsSheet);
+sheetBackdrop.addEventListener('click', closeStationsSheet);
 
 initTheme();
 renderFavorites();
+renderStationList();
 loadStations();

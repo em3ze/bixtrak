@@ -26,31 +26,17 @@
       </header>
 
       <main class="content">
-        <section id="home-section" class="selector-panel card">
-          <div class="search-wrap">
-            <label for="station-search">Rechercher une station</label>
-            <div class="search-input-shell">
-              <span class="search-icon">⌕</span>
-              <input
-                id="station-search"
-                type="text"
-                placeholder="Tapez le nom d’une station..."
-                autocomplete="off"
-              />
+        <section id="home-section" class="home-view">
+          <section class="details card">
+            <div class="details-topline">
+              <span class="details-icon">📍</span>
+              <h2 id="station-name">Station</h2>
             </div>
-          </div>
+            <p id="station-meta">Sélectionnez une station pour voir les détails.</p>
+            <p id="station-status" class="status-line" data-status="unknown">Statut : --</p>
+          </section>
 
-          <label for="station-select" class="select-label">Choisir une station</label>
-          <select id="station-select">
-            <option value="">Chargement…</option>
-          </select>
-
-          <div class="action-row">
-            <button id="favorite-toggle" type="button">Ajouter aux favoris</button>
-          </div>
-        </section>
-
-        <section id="stations-section" class="stats-grid">
+          <section id="stations-section" class="stats-grid">
           <article class="card stat-card accent-blue">
             <div class="card-header">
               <span class="card-icon">🚲</span>
@@ -74,15 +60,7 @@
             </div>
             <strong id="dock-count">0</strong>
           </article>
-        </section>
-
-        <section class="details card">
-          <div class="details-topline">
-            <span class="details-icon">📍</span>
-            <h2 id="station-name">Station</h2>
-          </div>
-          <p id="station-meta">Sélectionnez une station pour voir les détails.</p>
-          <p id="station-status" class="status-line" data-status="unknown">Statut : --</p>
+          </section>
         </section>
 
         <section id="favorites-section" class="favorites card">
@@ -92,6 +70,33 @@
           </ul>
         </section>
       </main>
+
+      <div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
+      <section id="stations-sheet" class="stations-sheet" aria-labelledby="stations-sheet-title" aria-hidden="true">
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <div class="sheet-header">
+          <div>
+            <p class="eyebrow">BixTrak</p>
+            <h2 id="stations-sheet-title">Stations</h2>
+          </div>
+          <button id="close-stations" class="sheet-close" type="button" aria-label="Fermer la liste des stations">×</button>
+        </div>
+        <div class="search-input-shell sheet-search">
+          <span class="search-icon">⌕</span>
+          <input
+            id="station-search"
+            type="text"
+            placeholder="Rechercher une station..."
+            autocomplete="off"
+          />
+        </div>
+        <select id="station-select" class="visually-hidden" aria-hidden="true">
+          <option value="">Chargement…</option>
+        </select>
+        <ul id="station-list" class="station-list">
+          <li class="empty-state">Chargement des stations...</li>
+        </ul>
+      </section>
 
       <nav class="bottom-nav" aria-label="Navigation principale">
         <div class="bottom-nav-pill">
