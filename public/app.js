@@ -23,7 +23,7 @@ try {
   const storedFavorites = JSON.parse(localStorage.getItem('bixtrak-favorites') || '[]');
   favorites = Array.isArray(storedFavorites) ? storedFavorites : [];
 } catch (error) {
-  localStorage.removeItem('bixtrak-favorites');
+  favorites = [];
 }
 
 function applyTheme(theme) {
@@ -69,6 +69,10 @@ function saveFavorites() {
 }
 
 function updateFavoriteButton(stationId) {
+  if (!favoriteToggle) {
+    return;
+  }
+
   if (!stationId) {
     favoriteToggle.disabled = true;
     favoriteToggle.textContent = 'Ajouter aux favoris';
@@ -310,7 +314,8 @@ async function loadStationDetails(stationId) {
   }
 }
 
-stationSearch.addEventListener('input', () => {
+if (stationSearch) {
+  stationSearch.addEventListener('input', () => {
   const query = stationSearch.value.trim().toLowerCase();
   const filteredStations = query
     ? allStations.filter((station) =>
@@ -323,20 +328,25 @@ stationSearch.addEventListener('input', () => {
   if (stationSelect.value) {
     loadStationDetails(stationSelect.value);
   }
-});
+  });
+}
 
-stationSelect.addEventListener('change', (event) => {
+if (stationSelect) {
+  stationSelect.addEventListener('change', (event) => {
   const selectedStationId = event.target.value;
   if (selectedStationId) {
     loadStationDetails(selectedStationId);
   }
-});
+  });
+}
 
-favoriteToggle.addEventListener('click', () => {
-  if (stationSelect.value) {
-    toggleFavorite(stationSelect.value);
-  }
-});
+if (favoriteToggle) {
+  favoriteToggle.addEventListener('click', () => {
+    if (stationSelect && stationSelect.value) {
+      toggleFavorite(stationSelect.value);
+    }
+  });
+}
 
 if (themeToggle) {
   themeToggle.addEventListener('click', toggleTheme);

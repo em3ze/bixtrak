@@ -168,7 +168,15 @@ async function getStationsFromApi() {
   }
 }
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  etag: false,
+  maxAge: 0,
+  setHeaders: (response) => {
+    response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.setHeader('Pragma', 'no-cache');
+    response.setHeader('Expires', '0');
+  }
+}));
 
 app.get('/api/stations', async (_req, res) => {
   const stations = await getStationsFromApi();
