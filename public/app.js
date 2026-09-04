@@ -177,7 +177,7 @@ function closeStationsSheet() {
   document.body.classList.remove('sheet-open');
 }
 
-function openStationsSheet() {
+function openStationsSheet(focusSearch = false) {
   if (!stationsSheet || !sheetBackdrop) {
     return;
   }
@@ -186,7 +186,9 @@ function openStationsSheet() {
   stationsSheet.setAttribute('aria-hidden', 'false');
   sheetBackdrop.hidden = false;
   document.body.classList.add('sheet-open');
-  window.setTimeout(() => stationSearch.focus(), 250);
+  if (focusSearch && stationSearch) {
+    window.setTimeout(() => stationSearch.focus(), 250);
+  }
 }
 
 function renderStationList(filteredStations = allStations) {
@@ -417,7 +419,7 @@ navItems.forEach((navItem) => {
 if (navSearch) {
   navSearch.addEventListener('click', () => {
     setActiveNav('stations-section');
-    openStationsSheet();
+    openStationsSheet(true);
   });
 }
 
