@@ -15,7 +15,7 @@ const navItems = document.querySelectorAll('.nav-item');
 const stationsSheet = document.getElementById('stations-sheet');
 const sheetBackdrop = document.getElementById('sheet-backdrop');
 const closeStations = document.getElementById('close-stations');
-const stationsSection = document.getElementById('stations-section');
+const detailsSection = document.getElementById('details-section');
 const stationMap = document.getElementById('station-map');
 const mapEmpty = document.getElementById('map-empty');
 const availabilityHistory = document.getElementById('availability-history');
@@ -439,8 +439,8 @@ async function loadStationDetails(stationId) {
   }
 }
 
-if (stationsSection) {
-  stationsSection.addEventListener('click', selectNextFavorite);
+if (detailsSection) {
+  detailsSection.addEventListener('click', selectNextFavorite);
 }
 
 if (stationSearch) {
