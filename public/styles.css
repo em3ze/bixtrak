@@ -744,6 +744,14 @@ body.sheet-open {
   color: rgba(237, 245, 255, 0.62);
   cursor: pointer;
   font: inherit;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.nav-item:focus-visible,
+.nav-search:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
 }
 
 .nav-item {
