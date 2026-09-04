@@ -128,13 +128,22 @@ function updateStationMap(station) {
 }
 
 function selectNextFavorite() {
-  if (!activeStation || favorites.length < 2) {
+  if (!detailsSection || !activeStation || favorites.length < 2 || detailsSection.classList.contains('is-flipping')) {
     return;
   }
+
   const currentIndex = favorites.indexOf(String(activeStation.id));
   const nextFavoriteId = favorites[(currentIndex + 1) % favorites.length];
-  stationSelect.value = nextFavoriteId;
-  loadStationDetails(nextFavoriteId);
+  detailsSection.classList.add('is-flipping');
+
+  window.setTimeout(() => {
+    stationSelect.value = nextFavoriteId;
+    loadStationDetails(nextFavoriteId);
+  }, 230);
+
+  window.setTimeout(() => {
+    detailsSection.classList.remove('is-flipping');
+  }, 520);
 }
 
 function saveFavorites() {

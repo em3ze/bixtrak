@@ -395,6 +395,34 @@ body.theme-light .accent-orange {
 .details {
   padding: 18px 18px 20px;
   background: linear-gradient(180deg, rgba(17, 24, 39, 0.92) 0%, rgba(15, 23, 42, 0.8) 100%);
+  transform-style: preserve-3d;
+  perspective: 900px;
+  cursor: pointer;
+}
+
+.details.is-flipping {
+  animation: details-card-flip 520ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes details-card-flip {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  45% {
+    transform: rotateY(90deg) scale(0.98);
+  }
+  55% {
+    transform: rotateY(-90deg) scale(0.98);
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .details.is-flipping {
+    animation: none;
+  }
 }
 
 body.theme-light .details {
