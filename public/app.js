@@ -127,23 +127,33 @@ function updateStationMap(station) {
   }
 }
 
-function selectNextFavorite() {
+async function selectNextFavorite() {
   if (!detailsSection || !activeStation || favorites.length < 2 || detailsSection.classList.contains('is-flipping')) {
     return;
   }
 
   const currentIndex = favorites.indexOf(String(activeStation.id));
   const nextFavoriteId = favorites[(currentIndex + 1) % favorites.length];
-  detailsSection.classList.add('is-flipping');
 
-  window.setTimeout(() => {
-    stationSelect.value = nextFavoriteId;
-    loadStationDetails(nextFavoriteId);
-  }, 230);
+  try {
+    const response = await fetch(`/api/stations/${nextFavoriteId}`);
+    const nextStation = await response.json();
+    if (!nextStation) {
+      return;
+    }
 
-  window.setTimeout(() => {
-    detailsSection.classList.remove('is-flipping');
-  }, 520);
+    detailsSection.classList.add('is-flipping');
+    window.setTimeout(() => {
+      stationSelect.value = nextFavoriteId;
+      updateStationView(nextStation);
+    }, 260);
+
+    window.setTimeout(() => {
+      detailsSection.classList.remove('is-flipping');
+    }, 540);
+  } catch (error) {
+    console.error('Unable to load next favorite:', error);
+  }
 }
 
 function saveFavorites() {
@@ -424,6 +434,14 @@ async function loadStationDetails(stationId) {
 
     activeStation = station;
 
+    updateStationView(station);
+  } catch (error) {
+    console.error('Unable to load station details:', error);
+  }
+}
+
+function updateStationView(station) {
+  activeStation = station;
     const bikes = Number(station.bikes_available ?? 0);
     const docks = Number(station.docks_available ?? 0);
     const ebikes = Number(station.ebikes_available ?? station.num_ebikes_available ?? 0);
@@ -443,9 +461,6 @@ async function loadStationDetails(stationId) {
     updateFavoriteButton(station.id);
     updateStationMap(station);
     saveHistory(station);
-  } catch (error) {
-    console.error('Unable to load station details:', error);
-  }
 }
 
 if (detailsSection) {

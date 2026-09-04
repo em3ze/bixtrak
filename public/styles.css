@@ -401,21 +401,18 @@ body.theme-light .accent-orange {
 }
 
 .details.is-flipping {
-  animation: details-card-flip 520ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: details-card-flip 540ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes details-card-flip {
   0% {
     transform: rotateY(0deg) scale(1);
   }
-  45% {
+  50% {
     transform: rotateY(90deg) scale(0.98);
   }
-  55% {
-    transform: rotateY(-90deg) scale(0.98);
-  }
   100% {
-    transform: rotateY(0deg) scale(1);
+    transform: rotateY(360deg) scale(1);
   }
 }
 
