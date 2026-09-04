@@ -125,7 +125,30 @@ function renderFavorites() {
     removeButton.addEventListener('click', () => toggleFavorite(String(favoriteId)));
 
     item.appendChild(stationButton);
-    item.appendChild(removeButton);
+
+    const favoriteControls = document.createElement('div');
+    favoriteControls.className = 'favorite-controls';
+
+    const moveUpButton = document.createElement('button');
+    moveUpButton.type = 'button';
+    moveUpButton.className = 'favorite-move';
+    moveUpButton.textContent = '↑';
+    moveUpButton.disabled = favorites.indexOf(String(favoriteId)) === 0;
+    moveUpButton.setAttribute('aria-label', `Monter ${station ? station.name : favoriteId}`);
+    moveUpButton.addEventListener('click', () => moveFavorite(String(favoriteId), -1));
+
+    const moveDownButton = document.createElement('button');
+    moveDownButton.type = 'button';
+    moveDownButton.className = 'favorite-move';
+    moveDownButton.textContent = '↓';
+    moveDownButton.disabled = favorites.indexOf(String(favoriteId)) === favorites.length - 1;
+    moveDownButton.setAttribute('aria-label', `Descendre ${station ? station.name : favoriteId}`);
+    moveDownButton.addEventListener('click', () => moveFavorite(String(favoriteId), 1));
+
+    favoriteControls.appendChild(moveUpButton);
+    favoriteControls.appendChild(moveDownButton);
+    favoriteControls.appendChild(removeButton);
+    item.appendChild(favoriteControls);
     favoriteList.appendChild(item);
   });
 }
@@ -232,6 +255,19 @@ function toggleFavorite(stationId) {
   renderStationList();
 }
 
+function moveFavorite(stationId, direction) {
+  const currentIndex = favorites.indexOf(String(stationId));
+  const nextIndex = currentIndex + direction;
+
+  if (currentIndex < 0 || nextIndex < 0 || nextIndex >= favorites.length) {
+    return;
+  }
+
+  [favorites[currentIndex], favorites[nextIndex]] = [favorites[nextIndex], favorites[currentIndex]];
+  saveFavorites();
+  renderFavorites();
+}
+
 function renderStationOptions(filteredStations = allStations) {
   stationSelect.innerHTML = '<option value="">Choisir une station</option>';
 
@@ -250,7 +286,8 @@ function renderStationOptions(filteredStations = allStations) {
   });
 
   if (!stationSelect.value || !filteredStations.some((station) => String(station.id) === String(stationSelect.value))) {
-    stationSelect.value = String(filteredStations[0].id);
+    const firstFavorite = filteredStations.find((station) => String(station.id) === String(favorites[0]));
+    stationSelect.value = String((firstFavorite || filteredStations[0]).id);
   }
 
   updateFavoriteButton(stationSelect.value);
@@ -392,6 +429,7 @@ if (sheetBackdrop) {
   sheetBackdrop.addEventListener('click', closeStationsSheet);
 }
 
+normalizeFavorites();
 initTheme();
 renderFavorites();
 renderStationList();
